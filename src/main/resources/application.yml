@@ -1,0 +1,39 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    name: db
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/db_cuthand?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+
+mybatis:
+  mapper-locations: mapper/*.xml
+
+logging:
+  level:
+    com.spt.helloworld.dao.mapper: debug
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params=count: countSql
+
+# 是否支持批量上传   (默认值 true)
+spring.servlet:
+  multipart.enabled: true
+  # 上传文件的临时目录 （一般情况下不用特意修改）
+  multipart.location:
+  # 上传文件最大为 1M （默认值 1M 根据自身业务自行控制即可）
+  multipart.max-file-size: 1048576
+  # 上传请求最大为 10M（默认值10M 根据自身业务自行控制即可）
+  multipart.max-request-size: 10485760
+  # 文件大小阈值，当大于这个阈值时将写入到磁盘，否则存在内存中，（默认值0 一般情况下不用特意修改）
+  multipart.file-size-threshold: 0
+  # 判断是否要延迟解析文件（相当于懒加载，一般情况下不用特意修改）
+  multipart.resolve-lazily: false
+

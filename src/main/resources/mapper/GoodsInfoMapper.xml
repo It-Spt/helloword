@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spt.helloworld.dao.mapper.GoodsMapper">
+  <resultMap id="BaseResultMap" type="com.spt.helloworld.domain.GoodsInfo">
+    <id column="g_id" jdbcType="INTEGER" property="gId" />
+    <result column="g_name" jdbcType="VARCHAR" property="gName" />
+    <result column="g_price" jdbcType="DOUBLE" property="gPrice" />
+    <result column="f_type" jdbcType="VARCHAR" property="fType" />
+    <result column="g_time" jdbcType="TIMESTAMP" property="gTime" />
+    <result column="g_desc" jdbcType="VARCHAR" property="gDesc" />
+  </resultMap>
+  
+  <resultMap id="goods_picture" type="com.spt.helloworld.domain.GoodsInfo" extends="BaseResultMap">
+    <association property="pictureInfo" javaType="com.spt.helloworld.domain.PictureInfo">
+      <id column="g_id" jdbcType="INTEGER" property="gId" />
+      <result column="g_picture" jdbcType="VARCHAR" property="gPicture" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    g_id, g_name, g_price, f_type, g_time, g_desc
+  </sql>
+
+  <select id="gooAndpic" parameterType="java.lang.Integer" resultMap="goods_picture">
+    SELECT g.*,p.g_picture
+    from goods as g JOIN picture as p JOIN stock s
+    WHERE s.g_id=g.g_id AND s.g_id=p.g_id AND g.g_id = p.g_id AND s.z_id=#{zId}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where g_id = #{gId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goods
+    where g_id = #{gId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.spt.helloworld.domain.GoodsInfo">
+    insert into goods (g_id, g_name, g_price, 
+      f_type, g_time, g_desc
+      )
+    values (#{gId,jdbcType=INTEGER}, #{gName,jdbcType=VARCHAR}, #{gPrice,jdbcType=DOUBLE}, 
+      #{fType,jdbcType=VARCHAR}, #{gTime,jdbcType=TIMESTAMP}, #{gDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.spt.helloworld.domain.GoodsInfo">
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gId != null">
+        g_id,
+      </if>
+      <if test="gName != null">
+        g_name,
+      </if>
+      <if test="gPrice != null">
+        g_price,
+      </if>
+      <if test="fType != null">
+        f_type,
+      </if>
+      <if test="gTime != null">
+        g_time,
+      </if>
+      <if test="gDesc != null">
+        g_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gId != null">
+        #{gId,jdbcType=INTEGER},
+      </if>
+      <if test="gName != null">
+        #{gName,jdbcType=VARCHAR},
+      </if>
+      <if test="gPrice != null">
+        #{gPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="fType != null">
+        #{fType,jdbcType=VARCHAR},
+      </if>
+      <if test="gTime != null">
+        #{gTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gDesc != null">
+        #{gDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spt.helloworld.domain.GoodsInfo">
+    update goods
+    <set>
+      <if test="gName != null">
+        g_name = #{gName,jdbcType=VARCHAR},
+      </if>
+      <if test="gPrice != null">
+        g_price = #{gPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="fType != null">
+        f_type = #{fType,jdbcType=VARCHAR},
+      </if>
+      <if test="gTime != null">
+        g_time = #{gTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gDesc != null">
+        g_desc = #{gDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where g_id = #{gId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spt.helloworld.domain.GoodsInfo">
+    update goods
+    set g_name = #{gName,jdbcType=VARCHAR},
+      g_price = #{gPrice,jdbcType=DOUBLE},
+      f_type = #{fType,jdbcType=VARCHAR},
+      g_time = #{gTime,jdbcType=TIMESTAMP},
+      g_desc = #{gDesc,jdbcType=VARCHAR}
+    where g_id = #{gId,jdbcType=INTEGER}
+  </update>
+</mapper>

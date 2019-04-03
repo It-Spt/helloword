@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spt.helloworld.dao.mapper.ReviewInfoMapper">
+  <resultMap id="BaseResultMap" type="com.spt.helloworld.domain.ReviewInfo">
+    <id column="re_id" jdbcType="INTEGER" property="reId" />
+    <result column="z_id" jdbcType="INTEGER" property="zId" />
+    <result column="re_context" jdbcType="VARCHAR" property="reContext" />
+    <result column="state" jdbcType="CHAR" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    re_id, z_id, re_context, state
+  </sql>
+
+  <select id="queryByState" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from review
+    where state = #{state}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from review
+    where re_id = #{reId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from review
+    where re_id = #{reId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.spt.helloworld.domain.ReviewInfo">
+    insert into review (re_id, z_id, re_context, 
+      state)
+    values (#{reId,jdbcType=INTEGER}, #{zId,jdbcType=INTEGER}, #{reContext,jdbcType=VARCHAR}, 
+      #{state,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spt.helloworld.domain.ReviewInfo">
+    insert into review
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="reId != null">
+        re_id,
+      </if>
+      <if test="zId != null">
+        z_id,
+      </if>
+      <if test="reContext != null">
+        re_context,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="reId != null">
+        #{reId,jdbcType=INTEGER},
+      </if>
+      <if test="zId != null">
+        #{zId,jdbcType=INTEGER},
+      </if>
+      <if test="reContext != null">
+        #{reContext,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spt.helloworld.domain.ReviewInfo">
+    update review
+    <set>
+      <if test="zId != null">
+        z_id = #{zId,jdbcType=INTEGER},
+      </if>
+      <if test="reContext != null">
+        re_context = #{reContext,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+    </set>
+    where re_id = #{reId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spt.helloworld.domain.ReviewInfo">
+    update review
+    set z_id = #{zId,jdbcType=INTEGER},
+      re_context = #{reContext,jdbcType=VARCHAR},
+      state = #{state,jdbcType=CHAR}
+    where re_id = #{reId,jdbcType=INTEGER}
+  </update>
+</mapper>
